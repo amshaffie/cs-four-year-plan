@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Academic Course Grid</title>
+    <style>
+        body {
+            background-color: #f0f4f8;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            margin: 0;
+        }
+
+        .degree-grid-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            padding: 8px 0 18px;
+        }
+
+        .degree-grid-content {
+            width: max-content;
+            min-width: 1320px;
+            margin: 0 auto;
+        }
+
+        .degree-title {
+            width: 100%;
+            margin: 0 0 30px;
+            text-align: center;
+        }
+
+        .grid-container {
+            display: grid;
+            /* 1 column for year labels + 10 columns for courses */
+            grid-template-columns: 80px repeat(10, 115px);
+            column-gap: 12px;
+            row-gap: 16px;
+            align-items: center;
+            min-width: 1320px;
+            position: relative;
+        }
+
+        .semester-heading {
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: #2c3e50;
+            color: #fff;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.16);
+        }
+
+        .semester-heading.first {
+            grid-column: 2 / span 5;
+        }
+
+        .semester-heading.second {
+            grid-column: 7 / span 5;
+            margin-left: 10px;
+        }
+
+        .semester-two-start {
+            position: relative;
+            margin-left: 10px;
+        }
+
+        .semester-two-start::before {
+            content: '';
+            position: absolute;
+            left: -17px;
+            top: -12px;
+            bottom: -12px;
+            width: 3px;
+            border-radius: 3px;
+            background: #2c3e50;
+            opacity: 0.75;
+        }
+
+        .row-label {
+            font-weight: bold;
+            transform: rotate(-90deg);
+            font-size: 1.2rem;
+            color: #333;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .course-block {
+            background-color: #d192c4; /* Original Purple */
+            border: 2px solid #2c3e50;
+            border-radius: 10px;
+            padding: 8px;
+            text-align: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+            height: 95px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 3px 3px 6px rgba(0,0,0,0.15);
+            transition: all 0.25s ease;
+            cursor: default;
+        }
+
+        /* HIGHLIGHT STATES */
+        .highlight-yellow { background-color: #ffeb3b !important; color: #000; transform: scale(1.05); z-index: 10; box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+        .highlight-green  { background-color: #00ff00 !important; color: #000; }
+        .highlight-red    { background-color: #ff4444 !important; color: #fff; }
+
+        .clickable { cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="degree-grid-wrapper">
+    <div class="degree-grid-content">
+    <h2 class="degree-title">BS in Computer Science 4- Year Plan</h2>
+    <div class="grid-container">
+        <div></div>
+        <div class="semester-heading first">FIRST SEMESTER</div>
+        <div class="semester-heading second">SECOND SEMESTER</div>
+        <div class="row-label">YEAR 1</div>
+        <div class="course-block" id="ENGL_1001">ENGL 1001<br>English Comp 1</div>
+        <div class="course-block" id="MATH_1550">MATH 1550<br>Calculus 1</div>
+        <div class="course-block" id="GenEDFineART">Gen Ed<br>Fine Art</div>
+        <div class="course-block" id="GenEDSocial">Gen Ed<br>Social Sci</div>
+        <div class="course-block" id="CSCI_1000">CSCI 1000<br>Comp Skills</div>
+        <div class="course-block semester-two-start" id="ENGL_1002">ENGL 1002<br>English Comp 2</div>
+        <div class="course-block" id="MATH_1552">MATH 1552<br>Calculus 2</div>
+        <div class="course-block" id="CSCI_1250">CSCI 1250<br>Intro Programming</div>
+        <div class="course-block" id="GenEDCommStudy">Gen Ed<br>Comm Study</div>
+        <div class="course-block" id="GenEDHuman1">Gen Ed<br>Humanities</div>
+
+        <div class="row-label">YEAR 2</div>
+        <div class="course-block" id="CSCI_1400">CSCI 1400<br>Digital Fund.</div>
+        <div class="course-block" id="GenEDChem1">Gen Ed<br>Chem/Phys 1</div>
+        <div class="course-block" id="GenEDBio">Gen Ed<br>Biology</div>
+        <div class="course-block" id="CSCI_2340">CSCI 2340<br>OO Design</div>
+        <div class="course-block" id="MATH_2011">MATH 2011<br>General or Mathematical Statistics</div>
+        <div class="course-block semester-two-start" id="GenEDHuman2">Gen Ed<br>Humanity</div>
+        <div class="course-block" id="GenEDChem2">Gen Ed<br>Chem/Phys 2</div>
+        <div class="course-block" id="MATH_3259">MATH 3259<br>Discrete Struct</div>
+        <div class="course-block" id="CSCI_2350">CSCI 2350<br>Data Structures</div>
+        <div class="course-block" id="CSCI_3501">CSCI 3501<br>Comp Org</div>
+
+        <div class="row-label">YEAR 3</div>
+        <div class="course-block" id="CSCI_3102">CSCI 3102<br>Algorithms</div>
+        <div class="course-block" id="MATH_3085">MATH 3085<br>Linear Algebra</div>
+        <div class="course-block" id="ARIN_3200">ARIN 3200<br>Ethics/AI</div>
+        <div class="course-block" id="GenEdPsycho">Gen Ed<br>Psychology</div>
+        <div class="course-block" id="FreeElec1">Free Elective</div>
+        <div class="course-block semester-two-start" id="CSCI_3640">CSCI 3640<br>Graphics</div>
+        <div class="course-block" id="CSCI_3650">CSCI 3650<br>Embedded Sys</div>
+        <div class="course-block" id="CSCI_4103">CSCI 4103<br>Operating Sys</div>
+        <div class="course-block" id="MATH_4065">MATH 4065<br>Numerical Analysis</div>
+        <div class="course-block" id="FreeElec2">Free Elective</div>
+
+        <div class="row-label">YEAR 4</div>
+        <div class="course-block" id="CSCI_4101">CSCI 4101<br>Prog Languages</div>
+        <div class="course-block" id="CSCI_4330">CSCI 4330<br>Software Dev</div>
+        <div class="course-block" id="CSCI_4402">CSCI 4402<br>Databases</div>
+        <div class="course-block" id="CSCI_4750">CSCI 4750<br>AI</div>
+        <div class="course-block" id="FreeElec3">Free Elective</div>
+        <div class="course-block semester-two-start" id="CSCI_4153">CSCI 4153<br>Networks</div>
+        <div class="course-block" id="CSCI_4163">CSCI 4163<br>Parallel Comp</div>
+        <div class="course-block" id="CSCI_4890">CSCI 4890<br>Theory of Comp</div>
+        <div class="course-block" id="CSCI_4998">CSCI 4998<br>Capstone</div>
+        <div class="course-block" id="FreeElec4">Free Elective</div>
+    </div>
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            /** * PREREQUISITE MAP
+             * Add entries here to enable highlighting for a course.
+             */
+            const courseData = {
+                'CSCI_1000': {
+                    pre: [],
+                    next: ['CSCI_1250']
+                },
+                'CSCI_1250': {
+                    pre: ['CSCI_1000'],
+                    next: ['CSCI_2340','ARIN_3200','CSCI_1400']
+                },
+                'CSCI_2340': {
+                    pre: ['CSCI_1250'],
+                    next: ['CSCI_2350', 'CSCI_3640']
+                },
+                'CSCI_2350': {
+                    pre: ['CSCI_2340'],
+                    next: ['CSCI_3102', 'CSCI_4890','CSCI_4103']
+                },
+                'CSCI_1400': {
+                    pre: ['CSCI_1250'],
+                    next: ['CSCI_3501', 'CSCI_3650']
+                },
+                'CSCI_3102': {
+                    pre: ['CSCI_2350'],
+                    next: ['CSCI_4402', 'CSCI_4750','CSCI_4330','CSCI_4770','CSCI_4760','CSCI_4740','CSCI_4730','CSCI_4101']
+                },
+                'CSCI_4330': {
+                    pre: ['CSCI_3102'],
+                    next: ['CSCI_4998']
+                },
+                'CSCI_4750': {
+                    pre: ['CSCI_3102'],
+                    next: []
+                },
+                'CSCI_4998': {
+                    pre: ['CSCI_4330'],
+                    next: []
+                },
+                'CSCI_4890': {
+                    pre: ['CSCI_2350','MATH_3259'],
+                    next: []
+                },
+                'ARIN_3200': {
+                    pre: ['CSCI_1250'],
+                    next: []
+                },
+                'CSCI_4103': {
+                    pre: ['CSCI_2350'],
+                    next: ['CSCI_4153', 'CSCI_4163']
+                },
+                'CSCI_4163': {
+                    pre: ['CSCI_4103'],
+                    next: []
+                },
+                'CSCI_4153': {
+                    pre: ['CSCI_4103'],
+                    next: []
+                },
+                'CSCI_4402': {
+                    pre: ['CSCI_3102'],
+                    next: []
+                },
+                'CSCI_3640': {
+                    pre: ['CSCI_2340'],
+                    next: []
+                },
+                'CSCI_4101': {
+                    pre: ['CSCI_3102'],
+                    next: []
+                },
+                'MATH_4065': {
+                    pre: ['MATH_1552'],
+                    next: []
+                },
+                'MATH_1552': {
+                    pre: ['MATH_1550'],
+                    next: ['MATH_4065']
+                },
+                'MATH_1550': {
+                    pre: [],
+                    next: ['MATH_1552']
+                },
+                'MATH_3085': {
+                    pre: ['MATH_1552'],
+                    next: []
+                },
+                'CSCI_3501': {
+                    pre: ['CSCI_1400'],
+                    next: []
+                },
+                'CSCI_3650': {
+                    pre: ['CSCI_1400'],
+                    next: []
+                },
+                'MATH_3259': {
+                    pre: ['MATH_1552'],
+                    next: ['CSCI_4890']
+                }
+
+            };
+
+            function applyHighlight(courseId, isEntering) {
+                const data = courseData[courseId];
+                if (!data) return;
+
+                const toggle = (id, className) => {
+                    const el = document.getElementById(id);
+                    if (el) isEntering ? el.classList.add(className) : el.classList.remove(className);
+                };
+
+                toggle(courseId, 'highlight-yellow'); 
+                data.pre.forEach(id => toggle(id, 'highlight-red'));
+                data.next.forEach(id => toggle(id, 'highlight-green'));
+            }
+
+            // Bind events to items in the map
+            Object.keys(courseData).forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.classList.add('clickable');
+                    el.addEventListener('mouseenter', () => applyHighlight(id, true));
+                    el.addEventListener('mouseleave', () => applyHighlight(id, false));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
